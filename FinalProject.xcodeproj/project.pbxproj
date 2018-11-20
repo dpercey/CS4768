@@ -14,6 +14,7 @@
 		A1D2356021A497B8004EF0EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1D2355F21A497B8004EF0EC /* Assets.xcassets */; };
 		A1D2356321A497B8004EF0EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1D2356121A497B8004EF0EC /* LaunchScreen.storyboard */; };
 		A1D2356621A497B8004EF0EC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D2356521A497B8004EF0EC /* main.m */; };
+		A1D2356E21A4B279004EF0EC /* Restaurant.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D2356D21A4B279004EF0EC /* Restaurant.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		A1D2356221A497B8004EF0EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1D2356421A497B8004EF0EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1D2356521A497B8004EF0EC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A1D2356C21A4B279004EF0EC /* Restaurant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Restaurant.h; sourceTree = "<group>"; };
+		A1D2356D21A4B279004EF0EC /* Restaurant.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Restaurant.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +68,8 @@
 				A1D2355421A497B7004EF0EC /* AppDelegate.m */,
 				A1D2355621A497B7004EF0EC /* FirstViewController.h */,
 				A1D2355721A497B7004EF0EC /* FirstViewController.m */,
+				A1D2356C21A4B279004EF0EC /* Restaurant.h */,
+				A1D2356D21A4B279004EF0EC /* Restaurant.m */,
 				A1D2355921A497B7004EF0EC /* SecondViewController.h */,
 				A1D2355A21A497B7004EF0EC /* SecondViewController.m */,
 				A1D2355C21A497B7004EF0EC /* Main.storyboard */,
@@ -147,6 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1D2355B21A497B7004EF0EC /* SecondViewController.m in Sources */,
+				A1D2356E21A4B279004EF0EC /* Restaurant.m in Sources */,
 				A1D2355521A497B7004EF0EC /* AppDelegate.m in Sources */,
 				A1D2356621A497B8004EF0EC /* main.m in Sources */,
 				A1D2355821A497B7004EF0EC /* FirstViewController.m in Sources */,
