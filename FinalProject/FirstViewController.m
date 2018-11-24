@@ -20,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     Restaurant *r1 = [[Restaurant alloc]init];
     [r1 setName:@"McDonalds"];
     [r1 setLocation:@"54 Kenmount Rd"];
@@ -45,6 +46,9 @@
     //[r1 setLogo:[UIImagePNGRepresentation([UIImage imageNamed:@""]) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
     
     restaurants = [[NSMutableArray alloc]initWithObjects: r1,r2,r3,r4,nil];
+    
+    
+    
 }
 
 -(void) didReceiveMemoryWarning{
@@ -62,7 +66,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    tableView.rowHeight=60;
+    tableView.rowHeight=80;
     
     NSString *Identifier = @"Identifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -71,7 +75,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
     }
     if (indexPath.row % 2 == 0){
-        cell.backgroundColor = [UIColor lightGrayColor];
+        cell.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:1.0f];
     } else {
         cell.backgroundColor = [UIColor colorWithRed:0.0f green:1.0f blue:0.0f alpha:1.0f];
     }
