@@ -134,16 +134,29 @@
                                 </constraints>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="43r-0R-4cV">
+                                <rect key="frame" x="0.0" y="60" width="375" height="558"/>
+                                <connections>
+                                    <outlet property="delegate" destination="8rJ-Kc-sve" id="w2V-Ds-7GY"/>
+                                </connections>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="bak-FJ-YX9" firstAttribute="top" secondItem="O1u-W8-tvY" secondAttribute="top" id="A6W-Tp-FlP"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="43r-0R-4cV" secondAttribute="bottom" id="AIs-eO-CpC"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="43r-0R-4cV" secondAttribute="trailing" id="Grl-XO-Jqa"/>
+                            <constraint firstItem="43r-0R-4cV" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" id="h4W-aU-Xhx"/>
                             <constraint firstItem="bak-FJ-YX9" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" id="rgI-Td-ULx"/>
+                            <constraint firstItem="43r-0R-4cV" firstAttribute="top" secondItem="bak-FJ-YX9" secondAttribute="bottom" id="vdZ-ED-U54"/>
                             <constraint firstItem="bak-FJ-YX9" firstAttribute="trailing" secondItem="O1u-W8-tvY" secondAttribute="trailing" id="wN6-PR-gUM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="map_marker" selectedImage="map_marker" id="cPa-gy-q4n"/>
+                    <connections>
+                        <outlet property="mapView" destination="43r-0R-4cV" id="VLH-P4-5tb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>

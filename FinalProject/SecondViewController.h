@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 #import "Restaurant.h"
 
-@interface SecondViewController : UIViewController
+@interface SecondViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
 
+@property (nonatomic, retain) IBOutlet MKMapView *mapView;
 
 @end
 
