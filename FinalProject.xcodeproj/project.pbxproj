@@ -16,6 +16,8 @@
 		A1D2356321A497B8004EF0EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1D2356121A497B8004EF0EC /* LaunchScreen.storyboard */; };
 		A1D2356621A497B8004EF0EC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D2356521A497B8004EF0EC /* main.m */; };
 		A1D2356E21A4B279004EF0EC /* Restaurant.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D2356D21A4B279004EF0EC /* Restaurant.m */; };
+		F1E8061221ACDB80007EF634 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E8061121ACDB80007EF634 /* MapKit.framework */; };
+		F1E8061421ACE277007EF634 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E8061321ACE277007EF634 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		A1D2356C21A4B279004EF0EC /* Restaurant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Restaurant.h; sourceTree = "<group>"; };
 		A1D2356D21A4B279004EF0EC /* Restaurant.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Restaurant.m; sourceTree = "<group>"; };
 		BE0E374413D32560594548A0 /* libPods-FinalProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FinalProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1E8061121ACDB80007EF634 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		F1E8061321ACE277007EF634 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1E8061421ACE277007EF634 /* CoreLocation.framework in Frameworks */,
+				F1E8061221ACDB80007EF634 /* MapKit.framework in Frameworks */,
 				77F66F531F6F67D4EF2C851D /* libPods-FinalProject.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +80,7 @@
 				A1D2355321A497B7004EF0EC /* AppDelegate.h */,
 				A1D2355421A497B7004EF0EC /* AppDelegate.m */,
 				A1D2355621A497B7004EF0EC /* FirstViewController.h */,
+				A1D2356421A497B8004EF0EC /* Info.plist */,
 				A1D2355721A497B7004EF0EC /* FirstViewController.m */,
 				A1D2356C21A4B279004EF0EC /* Restaurant.h */,
 				A1D2356D21A4B279004EF0EC /* Restaurant.m */,
@@ -82,7 +89,6 @@
 				A1D2355C21A497B7004EF0EC /* Main.storyboard */,
 				A1D2355F21A497B8004EF0EC /* Assets.xcassets */,
 				A1D2356121A497B8004EF0EC /* LaunchScreen.storyboard */,
-				A1D2356421A497B8004EF0EC /* Info.plist */,
 				A1D2356521A497B8004EF0EC /* main.m */,
 			);
 			path = FinalProject;
@@ -100,6 +106,8 @@
 		FE380B9398E5734F0D8B3DA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1E8061321ACE277007EF634 /* CoreLocation.framework */,
+				F1E8061121ACDB80007EF634 /* MapKit.framework */,
 				BE0E374413D32560594548A0 /* libPods-FinalProject.a */,
 			);
 			name = Frameworks;
@@ -138,6 +146,11 @@
 				TargetAttributes = {
 					A1D2354F21A497B7004EF0EC = {
 						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};

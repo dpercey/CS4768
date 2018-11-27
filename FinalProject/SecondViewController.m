@@ -20,64 +20,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self startUserLocationSearch];
+  
     
-    ////////////////////////
+}
+
+
+- (void) startUserLocationSearch{
     [GMSServices provideAPIKey:@"AIzaSyC1QIqrDn8keJpKyowsOpOysOHbOyBnJO8"];
     [GMSPlacesClient provideAPIKey:@"AIzaSyC1QIqrDn8keJpKyowsOpOysOHbOyBnJO8"];
     
     
-    CLLocation *location = [[CLLocation alloc] init];
-    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+    self.locationManager = [[CLLocationManager alloc] init];
     
-    //Right now hard coded to sydney as show in the GoogleMaps Documentation
-    // want to be able to use current long/lat.
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
-                                                           longitude:151.20
-                                                                zoom:6];
+    self.locationManager.delegate =self;
+    self.locationManager.distanceFilter = kCLDistanceFilterNone;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     
-    GMSMapView *mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-    mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-    mapView.settings.compassButton = YES;
-    mapView.settings.myLocationButton = YES;
-    mapView.myLocationEnabled = YES;
-    self.view = mapView;
+    if([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]){
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    NSLog(@"searching now");
+    [self.locationManager startUpdatingLocation];
     
-     //Creates a marker in the center of the map.
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(-33.86, 151.20);
-    marker.title = @"Sydney";
-   marker.snippet = @"Australia";
-    marker.map = mapView;
-    
-    ///////////////////////
-    
-    //CLLocationManager* locationManager;
-    //locationManager = [[CLLocationManager alloc]init];
-   // locationManager.delegate = self;
-    //[locationManager startUpdatingLocation];
-    
-    
-    
-    //var locationManager = CLLocationManager()
-   // var currentLocation: CLLocation?
-   // var mapView: GMSMapView!
-   // var placesClient: GMSPlacesClient!
-   // var zoomLevel: Float = 15.0
-    
-    
-    
-    
-    
-   // CLLocationCoordinate2D currentLocation;
-    
-   // currentLocation.latitude=locationManager.location.coordinate.latitude;
-   // currentLocation.longitude=locationManager.location.coordinate.longitude;
-    
-    
-   // MKCoordinateRegion reg = MKCoordinateRegionMakeWithDistance(currentLocation, 400, 400);
-   // self.mapView.region = reg;
-    //self.mapView.delegate = self;
-    
+  
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,12 +53,22 @@
 }
 
 
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 800, 800);
-    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
+    CLLocationCoordinate2D currentLocation;
+    currentLocation.latitude = self.locationManager.location.coordinate.latitude;
+    currentLocation.longitude = self.locationManager.location.coordinate.longitude;
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:currentLocation.latitude
+                                                            longitude:currentLocation.longitude
+                                                                 zoom:6];
+    
+    GMSMapView *mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    mapView.settings.compassButton = YES;
+    mapView.settings.myLocationButton = YES;
+    mapView.myLocationEnabled = YES;
+    self.mapView = mapView;
 }
-
 
 
 @end

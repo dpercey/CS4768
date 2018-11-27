@@ -10,10 +10,14 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "Restaurant.h"
+#import <GoogleMaps/GoogleMaps.h>
+@import GoogleMaps;
+@import GooglePlaces;
 
-@interface SecondViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
+@interface SecondViewController : UIViewController <GMSMapViewDelegate, CLLocationManagerDelegate>
 
-@property (nonatomic, retain) IBOutlet MKMapView *mapView;
+@property (nonatomic, retain) IBOutlet GMSMapView *mapView;
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @end
 
