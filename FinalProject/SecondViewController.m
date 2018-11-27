@@ -55,6 +55,7 @@
 
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
+    [self.locationManager stopUpdatingLocation];
     CLLocationCoordinate2D currentLocation;
     currentLocation.latitude = self.locationManager.location.coordinate.latitude;
     currentLocation.longitude = self.locationManager.location.coordinate.longitude;
@@ -62,14 +63,18 @@
     
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:currentLocation.latitude
                                                             longitude:currentLocation.longitude
-                                                                 zoom:6];
+                                                                 zoom:16];
     
-    GMSMapView *mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-    mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-    mapView.settings.compassButton = YES;
-    mapView.settings.myLocationButton = YES;
-    mapView.myLocationEnabled = YES;
-    self.mapView = mapView;
+    self.mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    self.mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    self.mapView.settings.compassButton = NO;
+    self.mapView.settings.myLocationButton = YES;
+    self.mapView.myLocationEnabled = YES;
+   UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectZero];
+    searchBar.frame = CGRectMake(0, 10, 100, searchBar.frame.size.height);
+   
+    self.view = self.mapView;
+     [self.view bringSubviewToFront:searchBar];
 }
 
 // The code snippet below shows how to create and display a GMSPlacePickerViewController.
