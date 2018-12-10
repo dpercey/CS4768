@@ -68,6 +68,7 @@
         NSDictionary *s = [NSJSONSerialization JSONObjectWithData:oResponseData options:0 error:&error];
         NSArray *results = s[@"results"];
         
+        
         [self.restaurants removeAllObjects];
         for(NSDictionary *r in results){
             Restaurant *thing = [[Restaurant alloc]init];
