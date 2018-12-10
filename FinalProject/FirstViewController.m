@@ -8,8 +8,10 @@
 
 #import "FirstViewController.h"
 #import "Restaurant.h"
+#import "SecondViewController.h"
 
 @interface FirstViewController ()
+
 
 
 @end
@@ -21,34 +23,75 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    Restaurant *r1 = [[Restaurant alloc]init];
-    [r1 setName:@"McDonalds"];
-    [r1 setLocation:@"54 Kenmount Rd"];
-    [r1 setPhoneNumber:@"(709)726-9720"];
-    //[r1 setLogo:[UIImagePNGRepresentation([UIImage imageNamed:@""]) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+    restaurants = [[NSMutableArray alloc]initWithObjects: nil];
+    self.tabBarController.selectedViewController
+    = [self.tabBarController.viewControllers objectAtIndex:1];
     
-    Restaurant *r2 = [[Restaurant alloc]init];
-    [r2 setName:@"Domino's"];
-    [r2 setLocation:@"274 Freshwater Rd"];
-    [r2 setPhoneNumber:@"(709)737-9444"];
-    //[r1 setLogo:[UIImagePNGRepresentation([UIImage imageNamed:@""]) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+  
+    [self loadRestaurants];
+}
+
+
+- (void) loadRestaurants{
+    SecondViewController *controller = self.tabBarController.viewControllers[1];
     
-    Restaurant *r3 = [[Restaurant alloc]init];
-    [r3 setName:@"Tim Hortons"];
-    [r3 setLocation:@"17 Westerland Rd"];
-    [r3 setPhoneNumber:@"(709)864-4899"];
-    //[r1 setLogo:[UIImagePNGRepresentation([UIImage imageNamed:@""]) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+    CLLocationCoordinate2D currentLocation;
+    currentLocation.latitude = controller.locationManager.location.coordinate.latitude;
+    currentLocation.longitude = controller.locationManager.location.coordinate.longitude;
     
-    Restaurant *r4 = [[Restaurant alloc]init];
-    [r4 setName:@"Starbucks"];
-    [r4 setLocation:@"Avalon Mall, 48 Kenmount Rd"];
-    [r4 setPhoneNumber:@"(709)739-3929"];
-    //[r1 setLogo:[UIImagePNGRepresentation([UIImage imageNamed:@""]) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+    NSLog(@"%f",currentLocation.latitude);
+    NSLog(@"%f",currentLocation.longitude);
     
-    restaurants = [[NSMutableArray alloc]initWithObjects: r1,r2,r3,r4,nil];
+    NSString *url = @"https://maps.googleapis.com/maps/api/place/textsearch/json?location=";
+    
+    url =[url stringByAppendingString:[NSString stringWithFormat:@"%f", currentLocation.latitude]];
+    url =[url stringByAppendingString:[NSString stringWithFormat:@",%f", currentLocation.longitude]];
+    url =[url stringByAppendingString:@"&type=restaurant&rankby=distance&key="];
+    url =[url stringByAppendingString:@"AIzaSyDvEWcGH-ltqTWsW3bv-bqkdCJAivJW-q0"];
+    
+    NSLog(url);
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    
+    NSError *error = nil;
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error ];
     
     
+    if([oResponseData length] != 0){
+        
+        NSDictionary *s = [NSJSONSerialization JSONObjectWithData:oResponseData options:0 error:&error];
+        NSArray *results = s[@"results"];
+        
+        [self.restaurants removeAllObjects];
+        for(NSDictionary *r in results){
+            Restaurant *thing = [[Restaurant alloc]init];
+            [thing setName:r[@"name"]];
+            [thing setAddress:r[@"formatted_address"]];
+            CLLocationCoordinate2D rlocation;
+            rlocation.latitude = [[r valueForKeyPath:@"geometry.location.lat"]doubleValue];
+            rlocation.longitude = [[r valueForKeyPath:@"geometry.location.lng"]doubleValue];
+            NSString *str=[[NSString alloc] initWithFormat:@" latitude:%f longitude:%f",rlocation.latitude,rlocation.longitude];
+            NSLog(@"%@",str);
+            [thing setLocation:rlocation];
+            [self addRestaurant:thing];
+
+            GMSMarker *marker = [GMSMarker markerWithPosition:rlocation];
+            marker.title = thing.getName;
+            marker.icon=[UIImage imageNamed:@"iconmap.png"];
+            marker.map = controller.mapView;
+            marker.snippet = thing.getName;
+            
+        }
+        [self.tableView reloadData];
+    }
     
+
 }
 
 -(void) didReceiveMemoryWarning{
@@ -84,7 +127,7 @@
     UILabel *restaurantName = (UILabel *)[cell viewWithTag:1];
     restaurantName.text = [restaurants[indexPath.row]getName];
     UILabel *restaurantLocation = (UILabel *)[cell viewWithTag:2];
-    restaurantLocation.text = [restaurants[indexPath.row]getLocation];
+    restaurantLocation.text = [restaurants[indexPath.row]getAddress];
     UILabel *restaurantPhoneNumber = (UILabel *)[cell viewWithTag:3];
     restaurantPhoneNumber.text = [restaurants[indexPath.row]getPhoneNumber];
     return cell;

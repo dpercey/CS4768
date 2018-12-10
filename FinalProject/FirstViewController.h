@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface FirstViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (copy,nonatomic) NSMutableArray *restaurants;
 
 -(void) addRestaurant:(NSObject*)restaurant;
-
+-(void) loadRestaurants;
 
 @end
 

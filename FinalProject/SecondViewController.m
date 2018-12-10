@@ -8,6 +8,7 @@
 
 #import "SecondViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
+#import "FirstViewController.h"
 @import GoogleMaps;
 @import GooglePlaces;
 @import GooglePlacePicker;
@@ -15,21 +16,22 @@
 @interface SecondViewController ()
 @end
 
-@implementation SecondViewController
+@implementation SecondViewController{
+    bool first;
+}
 
 @synthesize mapView;
 
 - (void)viewDidLoad {
+    first = YES;
     [super viewDidLoad];
     [self startUserLocationSearch];
-  
-    
 }
 
 
 - (void) startUserLocationSearch{
-    [GMSServices provideAPIKey:@"AIzaSyC1QIqrDn8keJpKyowsOpOysOHbOyBnJO8"];
-    [GMSPlacesClient provideAPIKey:@"AIzaSyC1QIqrDn8keJpKyowsOpOysOHbOyBnJO8"];
+    [GMSServices provideAPIKey:@"AIzaSyDvEWcGH-ltqTWsW3bv-bqkdCJAivJW-q0"];
+    [GMSPlacesClient provideAPIKey:@"AIzaSyDvEWcGH-ltqTWsW3bv-bqkdCJAivJW-q0"];
     
     
     self.locationManager = [[CLLocationManager alloc] init];
@@ -60,7 +62,6 @@
     currentLocation.latitude = self.locationManager.location.coordinate.latitude;
     currentLocation.longitude = self.locationManager.location.coordinate.longitude;
     
-    
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:currentLocation.latitude
                                                             longitude:currentLocation.longitude
                                                                  zoom:16];
@@ -70,11 +71,14 @@
     self.mapView.settings.compassButton = NO;
     self.mapView.settings.myLocationButton = YES;
     self.mapView.myLocationEnabled = YES;
-   UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectZero];
-    searchBar.frame = CGRectMake(0, 10, 100, searchBar.frame.size.height);
-   
     self.view = self.mapView;
-     [self.view bringSubviewToFront:searchBar];
+  
+    
+    if(first){
+        FirstViewController *controller = self.tabBarController.viewControllers[0];
+        [controller viewWillAppear:false];
+        first = NO;
+    }
 }
 
 // The code snippet below shows how to create and display a GMSPlacePickerViewController.
@@ -87,7 +91,6 @@
     GMSCoordinateBounds *viewport = [[GMSCoordinateBounds alloc] initWithCoordinate:northEast
                                                                          coordinate:southWest];
     
-
     GMSPlacePickerConfig *config = [[GMSPlacePickerConfig alloc] initWithViewport:nil];
     GMSPlacePickerViewController *placePicker =
     [[GMSPlacePickerViewController alloc] initWithConfig:config];
@@ -113,7 +116,6 @@
     
     NSLog(@"No place selected");
 }
-
 
 
 

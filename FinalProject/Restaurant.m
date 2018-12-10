@@ -20,7 +20,11 @@
     _name = name;
 }
 
--(void) setLocation:(NSString *)location{
+-(void) setAddress:(NSString *)address{
+    _address = address;
+}
+
+-(void) setLocation:(CLLocationCoordinate2D)location{
     _location = location;
 }
 
@@ -36,7 +40,7 @@
     return _name;
 }
 
--(NSString*) getLocation{
+-(CLLocationCoordinate2D) getLocation{
     return _location;
 }
 
@@ -47,5 +51,9 @@
 //-(NSString*) getLogo{
 //    return _logo;
 //}
+
+-(NSString*)getAddress{
+    return _address;
+}
 
 @end
