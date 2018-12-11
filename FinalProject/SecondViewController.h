@@ -13,13 +13,16 @@
 #import <GoogleMaps/GoogleMaps.h>
 @import GoogleMaps;
 @import GooglePlaces;
+@import GooglePlacePicker;
 
 @interface SecondViewController : UIViewController <GMSMapViewDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, retain) IBOutlet GMSMapView *mapView;
+@property (nonatomic) GMSPolyline *route;
+
 @property (strong, nonatomic) CLLocationManager *locationManager;
 - (void)findRestaurant:(CLLocationCoordinate2D) restaurantLocation;
-- (void)updateMap:(Restaurant *)restLoc;
+- (void)updateMap:(Restaurant *)restaurant;
 
 @end
 

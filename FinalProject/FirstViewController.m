@@ -35,6 +35,10 @@
 
 - (void) loadRestaurants{
     SecondViewController *controller = self.tabBarController.viewControllers[1];
+
+    if(controller.route != nil){
+        controller.route.map = nil;
+    }
     
     CLLocationCoordinate2D currentLocation;
     currentLocation.latitude = controller.locationManager.location.coordinate.latitude;
@@ -68,6 +72,7 @@
         
         
         [self.restaurants removeAllObjects];
+
         for(NSDictionary *r in results){
             Restaurant *thing = [[Restaurant alloc]init];
             [thing setName:r[@"name"]];
@@ -86,6 +91,7 @@
             marker.icon=[UIImage imageNamed:@"iconmap.png"];
             marker.map = controller.mapView;
             marker.snippet = thing.getName;
+            
             
         }
         [self.tableView reloadData];
@@ -135,7 +141,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     SecondViewController* svc = self.tabBarController.viewControllers[1];
-    [svc updateMap:restaurants[indexPath.row]];
+    [svc updateMap:self.restaurants[indexPath.row]];
     self.tabBarController.selectedViewController
     = [self.tabBarController.viewControllers objectAtIndex:1];
 }
@@ -145,5 +151,7 @@
 -(void) addRestaurant:(NSObject *)restaurant{
     [restaurants addObject:restaurant];
 }
+
+
 
 @end

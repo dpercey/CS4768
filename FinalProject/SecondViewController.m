@@ -77,6 +77,7 @@
         self.mapView.settings.compassButton = NO;
         self.mapView.settings.myLocationButton = YES;
         self.mapView.myLocationEnabled = YES;
+        self.mapView.delegate = self;
         self.view = self.mapView;
         
         FirstViewController *controller = self.tabBarController.viewControllers[0];
@@ -84,6 +85,14 @@
         first = NO;
     }
     
+}
+
+-(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker{
+     NSLog(@"Tapped");
+    [self.mapView setSelectedMarker:marker];
+    [self makeRouteToMarker:marker];
+   
+    return YES;
 }
 
 // The code snippet below shows how to create and display a GMSPlacePickerViewController.
@@ -135,13 +144,18 @@
     marker.icon=[UIImage imageNamed:@"iconmap.png"];
     marker.map = self.mapView;
     marker.snippet = [restaurant getName];
+    
     [self.mapView setSelectedMarker:marker];
- 
+    [self makeRouteToMarker:marker];
+   
+}
+
+-(void) makeRouteToMarker:(GMSMarker *)marker{
     NSString *url =@"https://maps.googleapis.com/maps/api/directions/json?origin=";
     url =[url stringByAppendingString:[NSString stringWithFormat:@"%f", self.locationManager.location.coordinate.latitude]];
     url =[url stringByAppendingString:[NSString stringWithFormat:@",%f",  self.locationManager.location.coordinate.longitude]];
-    url = [url stringByAppendingString:@"&destination=place_id:"];
-     url = [url stringByAppendingString:[restaurant getPlaceId]];
+    url =[url stringByAppendingString:[NSString stringWithFormat:@"&destination=%f", [marker position].latitude]];
+    url =[url stringByAppendingString:[NSString stringWithFormat:@",%f",[marker position].longitude]];
     url = [url stringByAppendingString:@"&key=AIzaSyDvEWcGH-ltqTWsW3bv-bqkdCJAivJW-q0"];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -152,14 +166,25 @@
     NSHTTPURLResponse *responseCode = nil;
     
     NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error ];
-    NSString *jsonString = [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
     
     if([oResponseData length] != 0){
-        GMSPath *path = [GMSPath pathFromEncodedPath:jsonString];
-        GMSPolyline *rectangle = [GMSPolyline polylineWithPath:path];
-        rectangle.strokeWidth = 2.f;
-        rectangle.map = self.mapView;
-
+        
+        NSDictionary *result        = [NSJSONSerialization JSONObjectWithData:oResponseData options:0 error:nil];
+        NSArray *routes             = [result objectForKey:@"routes"];
+        NSDictionary *firstRoute    = [routes objectAtIndex:0];
+        NSString *encodedPath       = [firstRoute[@"overview_polyline"] objectForKey:@"points"];
+        
+        if(self.route != nil){
+            self.route.map = nil;
+        }
+        
+        self.route     = [GMSPolyline polylineWithPath:[GMSPath pathFromEncodedPath:encodedPath]];
+        
+        self.route.strokeColor = [UIColor blueColor];
+        self.route.strokeWidth = 2.f;
+        self.route.map = self.mapView;
+        
+        
     }
 }
 
