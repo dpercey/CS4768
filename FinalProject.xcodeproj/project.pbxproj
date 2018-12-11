@@ -77,10 +77,10 @@
 		A1D2355221A497B7004EF0EC /* FinalProject */ = {
 			isa = PBXGroup;
 			children = (
+				A1D2356421A497B8004EF0EC /* Info.plist */,
 				A1D2355321A497B7004EF0EC /* AppDelegate.h */,
 				A1D2355421A497B7004EF0EC /* AppDelegate.m */,
 				A1D2355621A497B7004EF0EC /* FirstViewController.h */,
-				A1D2356421A497B8004EF0EC /* Info.plist */,
 				A1D2355721A497B7004EF0EC /* FirstViewController.m */,
 				A1D2356C21A4B279004EF0EC /* Restaurant.h */,
 				A1D2356D21A4B279004EF0EC /* Restaurant.m */,

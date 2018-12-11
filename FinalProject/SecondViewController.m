@@ -18,12 +18,14 @@
 
 @implementation SecondViewController{
     bool first;
+    bool moved;
 }
 
 @synthesize mapView;
 
 - (void)viewDidLoad {
     first = YES;
+    moved = NO;
     [super viewDidLoad];
     [self startUserLocationSearch];
 }
@@ -57,28 +59,31 @@
 
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
-    [self.locationManager stopUpdatingLocation];
-    CLLocationCoordinate2D currentLocation;
-    currentLocation.latitude = self.locationManager.location.coordinate.latitude;
-    currentLocation.longitude = self.locationManager.location.coordinate.longitude;
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:currentLocation.latitude
-                                                            longitude:currentLocation.longitude
-                                                                 zoom:16];
+   // [self.locationManager stopUpdatingLocation];
+   
     
-    self.mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-    self.mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-    self.mapView.settings.compassButton = NO;
-    self.mapView.settings.myLocationButton = YES;
-    self.mapView.myLocationEnabled = YES;
-    self.view = self.mapView;
-  
     
     if(first){
+        CLLocationCoordinate2D currentLocation;
+        currentLocation.latitude = self.locationManager.location.coordinate.latitude;
+        currentLocation.longitude = self.locationManager.location.coordinate.longitude;
+        
+        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:currentLocation.latitude
+                                                                longitude:currentLocation.longitude
+                                                                     zoom:16];
+        
+        self.mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+        self.mapView.settings.compassButton = NO;
+        self.mapView.settings.myLocationButton = YES;
+        self.mapView.myLocationEnabled = YES;
+        self.view = self.mapView;
+        
         FirstViewController *controller = self.tabBarController.viewControllers[0];
         [controller viewWillAppear:false];
         first = NO;
     }
+    
 }
 
 // The code snippet below shows how to create and display a GMSPlacePickerViewController.
@@ -115,6 +120,47 @@
     [viewController dismissViewControllerAnimated:YES completion:nil];
     
     NSLog(@"No place selected");
+}
+
+
+
+- (void)updateMap:(Restaurant *)restaurant{
+    GMSCameraPosition *newCamera = [GMSCameraPosition cameraWithLatitude:[restaurant getLocation].latitude
+                                                               longitude:[restaurant getLocation].longitude
+                                                                 zoom:16];
+   [self.mapView animateToCameraPosition:newCamera];
+    
+    GMSMarker *marker = [GMSMarker markerWithPosition:[restaurant getLocation]];
+    marker.title = [restaurant getName];
+    marker.icon=[UIImage imageNamed:@"iconmap.png"];
+    marker.map = self.mapView;
+    marker.snippet = [restaurant getName];
+    [self.mapView setSelectedMarker:marker];
+ 
+    NSString *url =@"https://maps.googleapis.com/maps/api/directions/json?origin=";
+    url =[url stringByAppendingString:[NSString stringWithFormat:@"%f", self.locationManager.location.coordinate.latitude]];
+    url =[url stringByAppendingString:[NSString stringWithFormat:@",%f",  self.locationManager.location.coordinate.longitude]];
+    url = [url stringByAppendingString:@"&destination=place_id:"];
+     url = [url stringByAppendingString:[restaurant getPlaceId]];
+    url = [url stringByAppendingString:@"&key=AIzaSyDvEWcGH-ltqTWsW3bv-bqkdCJAivJW-q0"];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    
+    NSError *error = nil;
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error ];
+    NSString *jsonString = [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
+    
+    if([oResponseData length] != 0){
+        GMSPath *path = [GMSPath pathFromEncodedPath:jsonString];
+        GMSPolyline *rectangle = [GMSPolyline polylineWithPath:path];
+        rectangle.strokeWidth = 2.f;
+        rectangle.map = self.mapView;
+
+    }
 }
 
 

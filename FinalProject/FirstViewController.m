@@ -12,8 +12,6 @@
 
 @interface FirstViewController ()
 
-
-
 @end
 
 @implementation FirstViewController
@@ -74,6 +72,7 @@
             Restaurant *thing = [[Restaurant alloc]init];
             [thing setName:r[@"name"]];
             [thing setAddress:r[@"formatted_address"]];
+            [thing setPlaceID:r[@"place_id"]];
             CLLocationCoordinate2D rlocation;
             rlocation.latitude = [[r valueForKeyPath:@"geometry.location.lat"]doubleValue];
             rlocation.longitude = [[r valueForKeyPath:@"geometry.location.lng"]doubleValue];
@@ -133,6 +132,14 @@
     restaurantPhoneNumber.text = [restaurants[indexPath.row]getPhoneNumber];
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    SecondViewController* svc = self.tabBarController.viewControllers[1];
+    [svc updateMap:restaurants[indexPath.row]];
+    self.tabBarController.selectedViewController
+    = [self.tabBarController.viewControllers objectAtIndex:1];
+}
+
 
 //Adds Restaurant to the NSMutableArray of Restaurants
 -(void) addRestaurant:(NSObject *)restaurant{

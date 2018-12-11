@@ -17,12 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CLLocationCoordinate2D location;
 @property (nonatomic) NSString *phoneNumber;
 @property (nonatomic) NSString *address;
+@property (nonatomic) NSString *placeID;
 //@property (nonatomic) NSString *logo;
 
 -(void) setName:(NSString*)name;
 -(void) setLocation:(CLLocationCoordinate2D)location;
 -(void) setPhoneNumber:(NSString*)phoneNumber;
 -(void) setAddress:(NSString *)address;
+-(void) setPlaceID:(NSString *)placeID;
 //-(void) setLogo:(NSString*)logo;
 
 -(NSString*)getName;
@@ -30,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSString*)getAddress;
 -(NSString*)getPhoneNumber;
 //-(NSString*)getLogo;
+-(NSString *)getPlaceId;
 
 
 @end

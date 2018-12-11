@@ -18,6 +18,8 @@
 
 @property (nonatomic, retain) IBOutlet GMSMapView *mapView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
+- (void)findRestaurant:(CLLocationCoordinate2D) restaurantLocation;
+- (void)updateMap:(Restaurant *)restLoc;
 
 @end
 

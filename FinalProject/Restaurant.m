@@ -32,6 +32,10 @@
     _phoneNumber = phoneNumber;
 }
 
+-(void) setPlaceID:(NSString *)placeID{
+    _placeID = placeID;
+}
+
 //-(void) setLogo:(NSString *)logo{
 //    _logo = logo;
 //}
@@ -54,6 +58,10 @@
 
 -(NSString*)getAddress{
     return _address;
+}
+
+-(NSString *)getPlaceId{
+    return _placeID;
 }
 
 @end
