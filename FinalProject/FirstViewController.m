@@ -90,7 +90,7 @@
             marker.title = thing.getName;
             marker.icon=[UIImage imageNamed:@"iconmap.png"];
             marker.map = controller.mapView;
-            marker.snippet = thing.getName;
+            marker.snippet = thing.getAddress;
             
             
         }
@@ -150,6 +150,43 @@
 //Adds Restaurant to the NSMutableArray of Restaurants
 -(void) addRestaurant:(NSObject *)restaurant{
     [restaurants addObject:restaurant];
+}
+
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchRestaurant{
+    
+    SecondViewController *controller = self.tabBarController.viewControllers[1];
+    CLLocationCoordinate2D currentLocation;
+    currentLocation.latitude = controller.locationManager.location.coordinate.latitude;
+    currentLocation.longitude = controller.locationManager.location.coordinate.longitude;
+    
+    NSString *rawInput = searchRestaurant.text;
+    NSArray* words = [rawInput componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString* refinedInput = [words componentsJoinedByString:@""];
+    
+    NSLog(refinedInput);
+    
+    NSString *url = @"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=";
+    url =[url stringByAppendingString:refinedInput];
+    url =[url stringByAppendingString:@"&inputtype=textquery&fields=photos,formatted_address,name&locationbias=circle:2000@"];
+    url =[url stringByAppendingString:[NSString stringWithFormat:@"%f", currentLocation.latitude]];
+    url =[url stringByAppendingString:[NSString stringWithFormat:@",%f", currentLocation.longitude]];
+    url =[url stringByAppendingString:@"&key="];
+    url =[url stringByAppendingString:@"AIzaSyDvEWcGH-ltqTWsW3bv-bqkdCJAivJW-q0"];
+    
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    
+    NSError *error = nil;
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error ];
+    
+    if([oResponseData length] != 0){
+        NSLog(url);
+    }
 }
 
 
